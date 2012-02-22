@@ -17,7 +17,7 @@ div.block{
 
 div.block label{
   font-family: Verdana, Arial; 
-  width: 260px;
+  width: 160px;
   display: block;
   float: left;
   text-align: left;
@@ -50,6 +50,7 @@ div.header{
 <div class="header">Venu Music Database</div>
 <p>
 <br>Testing database connectivity...<br>
+
 <!-- Start the PHP script... -->
 <?php
 
@@ -87,7 +88,7 @@ if(!$result){
 }
 // Just echoing the result back out wont work...
 //echo $result;
-echo "<br>Query results:<br>";
+echo "<br>Test Query results:<br>";
 echo "\n<table border=\"2\">";
 echo "\n<tr>";
 echo "<td>User</td>\n";
