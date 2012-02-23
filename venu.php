@@ -11,7 +11,6 @@
 div.block{
   overflow:hidden;
 }
-
 div.block label{
   font-family: Verdana, Arial; 
   width: 120px;
@@ -19,7 +18,6 @@ div.block label{
   float: left;
   text-align: left;
 }
-
 div.block .input{
   font-family: Verdana, Arial;
   width: 300px;
@@ -32,16 +30,32 @@ div.header{
   font-family: Verdana, Arial;
   font-size: x-large;
   font-style: normal;
-  font-variant: normal;
   font-weight: bolder;
-  margin: 10px;
+  margin: 2px;
   padding-bottom: 2px;
   padding-left: 12px;
   padding-right: 2px;
   padding-top: 2px;
   text-align: left;
-  text-decoration: none;
-  width: 80%
+  width: 90%
+}
+div.footer{
+  background-color: #bbbbbb;
+  color: #191970;
+  font-family: Verdana, Arial;
+  font-size: smaller;
+  font-style: italic;
+  font-weight: lighter;
+  padding-bottom: 1px;
+  padding-left: 12px;
+  padding-right: 1px;
+  padding-top: 1px;
+  text-align: left;
+  width: 90%
+}
+div.sect1{
+  font-size: larger;
+  font-family: Verdana, Arial;
 }
 </style>
 <div class="header">Venu Music Database</div>
@@ -103,8 +117,9 @@ echo "</table>";
 mysql_free_result($result);
 // Close the connection
 mysql_close($link);
-?>
-<h2>Add an entry to the database:</h2>
+?> <!-- End of db PHP block -->
+<p><p>&nbsp;<p>
+<div class="sect1">Add an entry to the database:</div><p>
 <div class="block">
   <label>Artist:</label>
   <input class="input" type="text" id="txtArtist"/>
@@ -117,12 +132,15 @@ mysql_close($link);
   <label>Link:</label>
   <input class="input" type="text" id="txtLink">
 </div>
-<h2>Search the database:</h2>
+<p><p>&nbsp;<p>
+<div class="sect1">Search the database:</div><p>
 <div class = "block">
   <label>Search:</label>
   <input class="input" type="text" id="txtSearch">
 </div>
 <p><p>
-<footer>(c) <a href="mailto:chrisbw@gmail.com">Chris Williams</a> 2012</footer>
+<p><p>&nbsp;<p>
+<p><p>&nbsp;<p>
+<div class = "footer">&copy; <a href="mailto:chrisbw@gmail.com">Chris Williams</a> 2012</div>
 </body>
 </html>
