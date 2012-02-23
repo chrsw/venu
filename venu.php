@@ -91,28 +91,41 @@ table.results td {
   border-color: white;
   background-color: rgb(194, 196, 238);
 }
+form label {
+  width: 80px;
+  float: left;
+  text-align: right;
+  margin-right: 0.5em;
+  font-family: Verdana, Arial;
+  font-size: smaller;
+  display: block
+} .submit input {
+  margin-left: 432px;
+  width: 60px;
+} input {
+  width: 400px;
+  font-family: Verdana, Arial;
+}
+
 </style>
 <div class="header">Venu Music Database <header class="right">A simple way to track music</header></div>
 <p>
-<table class="results">
-<tr>
-	<th>Header</th>
-	<td>Content</td>
-</tr>
-</table>
+
 <!-- Start the main PHP script... -->
 <?php
 require_once 'db_login.php';    // In the future store MySQL DB login info in seperate file
 
 // Eastern timezone
 date_default_timezone_set(EST);
-echo "<br>Welcome to Venu, a web based system for tracking music. It is ".date("l\, jS \of F\, Y") . ".<p>";
+echo "<br>Welcome to Venu, a web based system for tracking music. ";
+echo "<p>This is very early software going through heavy development.";
+echo" <br>It is ".date("l\, jS \of F\, Y") . ".<p>";
 
 // One of the default databases on the MySQL system
 // Use this for database connectivity test
 $test_database = "mysql";
 $database = "venu";
-
+$table = "releases";        // Name of table where actual release data is stored
 $host = "localhost";        // hostname of the mysql server
 $user = "admin";            // New MySQL user with privs for accessing the db
 $password = "password";     // DB access password, eventually there will be
@@ -135,6 +148,49 @@ if (!mysql_select_db($database, $link)){
 } else {
     echo "<br>\nSelected database $database succesfully<br>\n";
 }
+
+// Save all the user input from the Artist entry form
+if (isset($_POST['txtArtistName']) && isset($_POST['txtReleaseName']) && isset($_POST['txtLinkUrl'])) {
+    $txtArtistName = $_POST['txtArtistName'];
+    $txtReleaseName = $_POST['txtReleaseName'];
+    $txtLinkUrl = $_POST['txtLinkUrl'];
+    // Sanitize some user input
+    $txtArtistName = htmlentities($txtArtistName);
+    $txtReleaseName = htmlentities($txtReleaseName);
+    $txtLinkUrl = htmlentities($txtLinkUrl);
+    // Display the user input
+    echo "Your artist is $txtArtistName.<br>\n";
+    echo "Your releasee is $txtReleaseName.<br>\n";
+    echo "Your link is $txtLinkUrl.<br>\n";
+    echo "<br>\n";
+    // Add the user input to the database
+    // MySQL command has the form:
+    // INSERT INTO releases(artist,release_name,link) VALUES('New Group','Group Release','http://newgroup.bandcamp.com/');
+    // Start building a query
+    $insertStart = sprintf("INSERT INTO %s(artist, release_name, link) ", mysql_real_escape_string($table)); 
+    $insertValues = sprintf("VALUES('%s', '%s', '%s');", mysql_real_escape_string($txtArtistName), mysql_real_escape_string($txtReleaseName), mysql_real_escape_string($txtLinkUrl));
+    $insertQuery = $insertStart . $insertValues;
+    $insertStatus = mysql_query($insertQuery);
+    if (!$insertStatus){
+        // Oops! something went wrong
+        echo "<p><b>Couldn't update the table!</b><p>";
+        echo "Tried to use: <pre>$insertQuery</pre><br>";
+        die("Bad insert: " . mysql_error());
+    }
+} else {
+echo "Release info not yet enerted.<p>";
+}
+echo <<<_END
+<form method="post" action="venu.php" />
+Add to the database: <br>
+<form action="venu.php" class="form">
+<p><label for="txtArtistName">Artist: </label> <input name="txtArtistName" /></br>
+<label for="txtReleaseName">Release: </label> <input name="txtReleaseName" /></br>
+<label for="txtLinkUrl">Link Url: </label> <input name="txtLinkUrl" /></br>
+<p class="submit"><input type="submit" value="Add" /></p>
+</form>
+_END;
+
 // A simple query -- Send a simple SQL query to the MySQL server and
 // print the results into an HTML table.
 $result = mysql_query('SELECT artist, release_name, link FROM releases');
@@ -161,58 +217,11 @@ while ($row = mysql_fetch_assoc($result)){
 echo "</table><br>";
 // Not sure if this is necessary yet
 mysql_free_result($result);
-// Save all the user input from the Artist entry form
-if (isset($_POST['txtArtistName']) && isset($_POST['txtReleaseName']) && isset($_POST['txtLinkUrl'])) {
-        $txtArtistName = $_POST['txtArtistName'];
-        $txtReleaseName = $_POST['txtReleaseName'];
-        $txtLinkUrl = $_POST['txtLinkUrl'];
-
-}else {
-echo "Release info not enerted.<p>";
-}
-echo <<<_END
-<form method="post" action="venu.php" />
-Add to the database.<br>
-<input type="text" name="txtArtistName" /> <br>
-<input type="text" name="txtReleaseName" /> <br>
-<input type="text" name="txtLinkUrl" /> <br>
-<input type="submit" value="Add" /><br>
-</form>
-Your artist is $txtArtistName.<br>
-Your releasee is $txtReleaseName.<br>
-Your link is $txtLinkUrl.<br>
-_END;
-
 // Close the connection to the server
 mysql_close($link);
 ?> <!-- End of db PHP block -->
-
-<p><p>&nbsp;<p>
-<div class="sect1">Add an entry to the database:</div><p>
-<div class="block">
-  <label>Artist:</label>
-  <input class="input" type="text" id="txtArtist"/>
-</div>
-<div class="block">
-  <label>Release:</label>
-  <input class="input" type="text" id="txtRelease"/>
-</div>
-<div class="block">
-  <label>Link:</label>
-  <input class="input" type="text" id="txtLink">
-</div>
-<p><p>&nbsp;<p>
-<div class="sect1">Search the database:</div><p>
-<div class = "block">
-  <label>Search:</label>
-  <input class="input" type="text" id="txtSearch">
-</div>
-
 <p><p>
 <p><p>&nbsp;<p>
-<p><p>&nbsp;<p>
-<p><p>&nbsp;<p>
-
 <div class = "footer">&copy; <a href="mailto:chrisbw@gmail.com">Chris Williams</a> 2012</div>
 </body>
 </html>
