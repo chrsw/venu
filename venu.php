@@ -102,6 +102,8 @@ table.results td {
 </table>
 <!-- Start the main PHP script... -->
 <?php
+require_once 'db_login.php';    // In the future store MySQL DB login info in seperate file
+
 // Eastern timezone
 date_default_timezone_set(EST);
 echo "<br>Welcome to Venu, a web based system for tracking music. It is ".date("l\, jS \of F\, Y") . ".<p>";
@@ -159,6 +161,27 @@ while ($row = mysql_fetch_assoc($result)){
 echo "</table><br>";
 // Not sure if this is necessary yet
 mysql_free_result($result);
+// Save all the user input from the Artist entry form
+if (isset($_POST['txtArtistName']) && isset($_POST['txtReleaseName']) && isset($_POST['txtLinkUrl'])) {
+        $txtArtistName = $_POST['txtArtistName'];
+        $txtReleaseName = $_POST['txtReleaseName'];
+        $txtLinkUrl = $_POST['txtLinkUrl'];
+
+}else {
+echo "Release info not enerted.<p>";
+}
+echo <<<_END
+<form method="post" action="venu.php" />
+Add to the database.<br>
+<input type="text" name="txtArtistName" /> <br>
+<input type="text" name="txtReleaseName" /> <br>
+<input type="text" name="txtLinkUrl" /> <br>
+<input type="submit" value="Add" /><br>
+</form>
+Your artist is $txtArtistName.<br>
+Your releasee is $txtReleaseName.<br>
+Your link is $txtLinkUrl.<br>
+_END;
 
 // Close the connection to the server
 mysql_close($link);
@@ -186,6 +209,7 @@ mysql_close($link);
 </div>
 
 <p><p>
+<p><p>&nbsp;<p>
 <p><p>&nbsp;<p>
 <p><p>&nbsp;<p>
 
