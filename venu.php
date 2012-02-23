@@ -1,10 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- Test system: -->
+<!-- Dev system: -->
 <!-- Mac OS X 10.7.2 Darwin Kernel Version 11.2.0: Tue Aug  9 20:54:00 PDT 2011; root:xnu-1699.24.8~1/RELEASE_X86_64 x86_64 -->
-<!-- PHP PHP 5.3.6 with Suhosin-Patch (cli) (built: Sep  8 2011 19:34:00) -->
-<!--  -->
+<!-- PHP 5.3.6 with Suhosin-Patch (cli) (built: Sep  8 2011 19:34:00) -->
+<!-- Apache/2.2.20 (Unix) DAV/2 PHP/5.3.6 with Suhosin-Patch -->
+
 <head>
 <title>Venu Music Database</title>
 </head>
@@ -42,6 +43,11 @@ div.header{
   padding-top: 2px;
   text-align: left;
   width: 90%
+} header.right {
+  font-size: small;
+  font-family: Verdana, Arial;
+  font-style: italic;
+  font-weight: lighter;
 }
 div.footer{
   background-color: #bbbbbb;
@@ -61,9 +67,39 @@ div.sect1{
   font-size: larger;
   font-family: Verdana, Arial;
 }
+table.results {
+  border-width: 4px;
+  border-spacing: 2px;
+  border-style: none;
+  border-color: gray;
+  border-collapse: collapse;
+  background-color: white;
+  font-family: Verdana, Arial;
+  font-size: smaller;
+}
+table.results th {
+  border-width: 1px;
+  padding: 4px;
+  border-style: inset;
+  border-color: white;
+  background-color: rgb(194, 196, 238);
+}
+table.results td {
+  border-width: 1px;
+  padding: 4px;
+  border-style: inset;
+  border-color: white;
+  background-color: rgb(194, 196, 238);
+}
 </style>
-<div class="header">Venu Music Database</div>
+<div class="header">Venu Music Database <header class="right">A simple way to track music</header></div>
 <p>
+<table class="results">
+<tr>
+	<th>Header</th>
+	<td>Content</td>
+</tr>
+</table>
 <!-- Start the main PHP script... -->
 <?php
 // Eastern timezone
@@ -75,10 +111,10 @@ echo "<br>Welcome to Venu, a web based system for tracking music. It is ".date("
 $test_database = "mysql";
 $database = "venu";
 
-$host = "localhost";     // hostname of the mysql server
-$user = "admin";         // New MySQL user with privs for accessing the db
-$password = "password";    // DB access password, eventually there will be
-                         // real authentication
+$host = "localhost";        // hostname of the mysql server
+$user = "admin";            // New MySQL user with privs for accessing the db
+$password = "password";     // DB access password, eventually there will be
+                            // real authentication
 
 // Connect to the mysql server
 $link = mysql_connect('localhost', 'admin', 'password');
@@ -105,18 +141,19 @@ if(!$result){
 }
 // The query results are stored in the PHP var $result
 echo "<br>Query results:<br>";
-echo "\n<table border=\"2\">";
+// Build a table from the CSS defined above
+echo "\n<table class=\"results\">";
 echo "\n<tr>";
-echo "<td><b>Artist</b></td>\n";
-echo "<td><b>Release</td></b>\n";
-echo "<td><b>Link</b></td>\n";
+echo "<td align=\"left\"><b>Artist</b></td>\n";
+echo "<td alignt=\"left\"><b>Release</td></b>\n";
+echo "<td align=\"right\"><b>Link</b></td>\n";
 echo "</tr>\n";
 while ($row = mysql_fetch_assoc($result)){
-    // try to create a table from these results
+    // create a table from these results
     echo "\n<tr>";
-    echo "<td>{$row['artist']}</td>\n";
-    echo "<td>{$row['release_name']}</td>";
-    echo "<td><a href=\"{$fow['link']}\">{$row['link']}</a></td>";
+    echo "<td align=\"left\">{$row['artist']}</td>\n";
+    echo "<td align=\"left\">{$row['release_name']}</td>";
+    echo "<td align=\"right\"><a href=\"{$fow['link']}\">{$row['link']}</a></td>";
     echo "\n</tr>";
 }
 echo "</table><br>";
