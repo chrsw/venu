@@ -1,6 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!-- Test system: -->
+<!-- Mac OS X 10.7.2 Darwin Kernel Version 11.2.0: Tue Aug  9 20:54:00 PDT 2011; root:xnu-1699.24.8~1/RELEASE_X86_64 x86_64 -->
+<!-- PHP PHP 5.3.6 with Suhosin-Patch (cli) (built: Sep  8 2011 19:34:00) -->
+<!--  -->
 <head>
 <title>Venu Music Database</title>
 </head>
@@ -20,13 +24,13 @@ div.block label{
 }
 div.block .input{
   font-family: Verdana, Arial;
-  width: 300px;
+  width: 400px;
   margin-left: 4px;
   float: left;
 }
 div.header{
   background-color: #b0c4de;
-  color: #191970;
+  color: #292980;
   font-family: Verdana, Arial;
   font-size: x-large;
   font-style: normal;
@@ -41,7 +45,7 @@ div.header{
 }
 div.footer{
   background-color: #bbbbbb;
-  color: #191970;
+  color: #292980;
   font-family: Verdana, Arial;
   font-size: smaller;
   font-style: italic;
@@ -60,32 +64,34 @@ div.sect1{
 </style>
 <div class="header">Venu Music Database</div>
 <p>
-<br>Testing database connectivity...<br>
-
-<!-- Start the PHP script... -->
+<!-- Start the main PHP script... -->
 <?php
-
-// Intro
-
 // Eastern timezone
 date_default_timezone_set(EST);
-echo "<br>Welcome user. Today is ".date("l\, jS \of F\, Y") . ".<p>";
+echo "<br>Welcome to Venu, a web based system for tracking music. It is ".date("l\, jS \of F\, Y") . ".<p>";
 
 // One of the default databases on the MySQL system
 // Use this for database connectivity test
-$database = "mysql";
+$test_database = "mysql";
+$database = "venu";
 
-// Connect to the db
+$host = "localhost";     // hostname of the mysql server
+$user = "admin";         // New MySQL user with privs for accessing the db
+$password = "password";    // DB access password, eventually there will be
+                         // real authentication
+
+// Connect to the mysql server
 $link = mysql_connect('localhost', 'admin', 'password');
 if (!$link){
     die('Could not connect to the database: ' . mysql_error());
 }
-// Status message
-echo "\n<br>Connected succesfully<br>\n";
 
-// Try to choose a database
-if (!mysql_select_db('mysql', $link)){
-    echo '\n<p>Could not select database' . $database;
+// Didn't die, print a status message
+echo "\n<br>Test connected succesfully<br>\n";
+
+// Try to connect to a database
+if (!mysql_select_db($database, $link)){
+    echo "\n<p>Could not select database" . $database;
     mysql_close($link);
     exit;
 } else {
@@ -93,31 +99,34 @@ if (!mysql_select_db('mysql', $link)){
 }
 // A simple query -- Send a simple SQL query to the MySQL server and
 // print the results into an HTML table.
-$result = mysql_query('SELECT user, host FROM user');
+$result = mysql_query('SELECT artist, release_name, link FROM releases');
 if(!$result){
     die('<p>Invalid query: ' . mysql_error());
 }
-// Just echoing the result back out wont work...
-//echo $result;
-echo "<br>Test Query results:<br>";
+// The query results are stored in the PHP var $result
+echo "<br>Query results:<br>";
 echo "\n<table border=\"2\">";
 echo "\n<tr>";
-echo "<td>User</td>\n";
-echo "<td>Host</td>\n";
+echo "<td><b>Artist</b></td>\n";
+echo "<td><b>Release</td></b>\n";
+echo "<td><b>Link</b></td>\n";
 echo "</tr>\n";
 while ($row = mysql_fetch_assoc($result)){
-// try to create a table from these results
-echo "\n<tr>";
-echo "<td>{$row['user']} </td>\n";
-echo "<td>{$row['host']}</td>";
-echo "\n</tr>";
+    // try to create a table from these results
+    echo "\n<tr>";
+    echo "<td>{$row['artist']}</td>\n";
+    echo "<td>{$row['release_name']}</td>";
+    echo "<td><a href=\"{$fow['link']}\">{$row['link']}</a></td>";
+    echo "\n</tr>";
 }
-echo "</table>";
+echo "</table><br>";
 // Not sure if this is necessary yet
 mysql_free_result($result);
-// Close the connection
+
+// Close the connection to the server
 mysql_close($link);
 ?> <!-- End of db PHP block -->
+
 <p><p>&nbsp;<p>
 <div class="sect1">Add an entry to the database:</div><p>
 <div class="block">
@@ -138,9 +147,11 @@ mysql_close($link);
   <label>Search:</label>
   <input class="input" type="text" id="txtSearch">
 </div>
+
 <p><p>
 <p><p>&nbsp;<p>
 <p><p>&nbsp;<p>
+
 <div class = "footer">&copy; <a href="mailto:chrisbw@gmail.com">Chris Williams</a> 2012</div>
 </body>
 </html>
