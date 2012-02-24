@@ -134,13 +134,13 @@ $password = "password";     // DB access password, eventually there will be
                             // real authentication
 
 // Connect to the mysql server
-$link = mysql_connect('$host', '$user', '$password');
+$link = mysql_connect("$host", "$user", "$password");
 if (!$link){
     die('Could not connect to the database: ' . mysql_error());
 }
 
 // Didn't die, print a status message
-echo "\n<br>Test connected succesfully<br>\n";
+echo "\n<br>Connected to database on $host succesfully<br>\n";
 
 // Try to connect to a database
 if (!mysql_select_db($database, $link)){
@@ -184,13 +184,13 @@ echo "Release info not yet enerted.<p>";
 }
 // Main user input form
 echo <<<_END
-<form method="post" action="venu.php" />
+<form method="post" action="venu.php"/>
 Add to the database: <br>
 <form action="venu.php" class="form">
 <p>
-<label for="txtArtistName">Artist: </label> <input name="txtArtistName" /></br>
-<label for="txtReleaseName">Release: </label> <input name="txtReleaseName" /></br>
-<label for="txtLinkUrl">Link Url: </label> <input name="txtLinkUrl" /></br>
+<label for="txtArtistName">Artist: </label> <input name="txtArtistName"/></br>
+<label for="txtReleaseName">Release: </label> <input name="txtReleaseName"/></br>
+<label for="txtLinkUrl">Link Url: </label> <input name="txtLinkUrl"/></br>
 <p class="submit"><input type="submit" value="Add" /></p>
 </form>
 _END;
