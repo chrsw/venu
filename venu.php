@@ -7,27 +7,29 @@
 <!-- Apache/2.2.20 (Unix) DAV/2 PHP/5.3.6 with Suhosin-Patch -->
 
 <head>
+
 <title>Venu Music Database</title>
+
 </head>
 
 <body>
 
 <style>
 div.block{
-  overflow:hidden;
+  overflow: hidden
 }
 div.block label{
   font-family: Verdana, Arial; 
   width: 120px;
   display: block;
   float: left;
-  text-align: left;
+  text-align: left
 }
 div.block .input{
   font-family: Verdana, Arial;
   width: 400px;
   margin-left: 4px;
-  float: left;
+  float: left
 }
 div.header{
   background-color: #b0c4de;
@@ -47,7 +49,7 @@ div.header{
   font-size: small;
   font-family: Verdana, Arial;
   font-style: italic;
-  font-weight: lighter;
+  font-weight: lighter
 }
 div.footer{
   background-color: #bbbbbb;
@@ -65,7 +67,7 @@ div.footer{
 }
 div.sect1{
   font-size: larger;
-  font-family: Verdana, Arial;
+  font-family: Verdana, Arial
 }
 table.results {
   border-width: 4px;
@@ -75,21 +77,21 @@ table.results {
   border-collapse: collapse;
   background-color: white;
   font-family: Verdana, Arial;
-  font-size: smaller;
+  font-size: smaller
 }
 table.results th {
   border-width: 1px;
   padding: 4px;
   border-style: inset;
   border-color: white;
-  background-color: rgb(194, 196, 238);
+  background-color: rgb(194, 196, 238)
 }
 table.results td {
   border-width: 1px;
   padding: 4px;
   border-style: inset;
   border-color: white;
-  background-color: rgb(194, 196, 238);
+  background-color: rgb(194, 196, 238)
 }
 form label {
   width: 80px;
@@ -101,13 +103,13 @@ form label {
   display: block
 } .submit input {
   margin-left: 432px;
-  width: 60px;
+  width: 60px
 } input {
   width: 400px;
-  font-family: Verdana, Arial;
+  font-family: Verdana, Arial
 }
-
 </style>
+
 <div class="header">Venu Music Database <header class="right">A simple way to track music</header></div>
 <p>
 
@@ -123,8 +125,8 @@ echo" <br>It is ".date("l\, jS \of F\, Y") . ".<p>";
 
 // One of the default databases on the MySQL system
 // Use this for database connectivity test
-$test_database = "mysql";
-$database = "venu";
+$test_database = "mysql";   // The database used for testing during development
+$database = "venu";         // The main music database
 $table = "releases";        // Name of table where actual release data is stored
 $host = "localhost";        // hostname of the mysql server
 $user = "admin";            // New MySQL user with privs for accessing the db
@@ -132,7 +134,7 @@ $password = "password";     // DB access password, eventually there will be
                             // real authentication
 
 // Connect to the mysql server
-$link = mysql_connect('localhost', 'admin', 'password');
+$link = mysql_connect('$host', '$user', '$password');
 if (!$link){
     die('Could not connect to the database: ' . mysql_error());
 }
@@ -158,11 +160,11 @@ if (isset($_POST['txtArtistName']) && isset($_POST['txtReleaseName']) && isset($
     $txtArtistName = htmlentities($txtArtistName);
     $txtReleaseName = htmlentities($txtReleaseName);
     $txtLinkUrl = htmlentities($txtLinkUrl);
-    // Display the user input
-    echo "Your artist is $txtArtistName.<br>\n";
-    echo "Your releasee is $txtReleaseName.<br>\n";
-    echo "Your link is $txtLinkUrl.<br>\n";
-    echo "<br>\n";
+    // Display the user input -- DEBUG off
+    //echo "Your artist is $txtArtistName.<br>\n";
+    //echo "Your releasee is $txtReleaseName.<br>\n";
+    //echo "Your link is $txtLinkUrl.<br>\n";
+    //echo "<br>\n";
     // Add the user input to the database
     // MySQL command has the form:
     // INSERT INTO releases(artist,release_name,link) VALUES('New Group','Group Release','http://newgroup.bandcamp.com/');
@@ -180,11 +182,13 @@ if (isset($_POST['txtArtistName']) && isset($_POST['txtReleaseName']) && isset($
 } else {
 echo "Release info not yet enerted.<p>";
 }
+// Main user input form
 echo <<<_END
 <form method="post" action="venu.php" />
 Add to the database: <br>
 <form action="venu.php" class="form">
-<p><label for="txtArtistName">Artist: </label> <input name="txtArtistName" /></br>
+<p>
+<label for="txtArtistName">Artist: </label> <input name="txtArtistName" /></br>
 <label for="txtReleaseName">Release: </label> <input name="txtReleaseName" /></br>
 <label for="txtLinkUrl">Link Url: </label> <input name="txtLinkUrl" /></br>
 <p class="submit"><input type="submit" value="Add" /></p>
@@ -215,11 +219,15 @@ while ($row = mysql_fetch_assoc($result)){
     echo "\n</tr>";
 }
 echo "</table><br>";
+
 // Not sure if this is necessary yet
 mysql_free_result($result);
+
 // Close the connection to the server
 mysql_close($link);
+
 ?> <!-- End of db PHP block -->
+
 <p><p>
 <p><p>&nbsp;<p>
 <div class = "footer">&copy; <a href="mailto:chrisbw@gmail.com">Chris Williams</a> 2012</div>
