@@ -211,7 +211,7 @@ while ($row = mysql_fetch_assoc($result)){
     echo "\n<tr>";
     echo "<td align=\"left\">{$row['artist']}</td>\n";
     echo "<td align=\"left\">{$row['release_name']}</td>";
-    echo "<td align=\"right\"><a href=\"{$fow['link']}\">{$row['link']}</a></td>";
+    echo "<td align=\"right\"><a href=\"{$row['link']}\">{$row['link']}</a></td>";
     echo "\n</tr>";
 }
 echo "</table><br>";
