@@ -1,2 +1,8 @@
+venu
+====
+
 This is a web-based tracking system for Music.
 Very early stages.
+
+
+PHP, MySQL, Apache and some type of Unix (or Unix compatible) required to run.
