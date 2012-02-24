@@ -93,6 +93,9 @@ table.results td {
   border-color: white;
   background-color: rgb(194, 196, 238)
 }
+table.results tr.alt td {
+  background-color: rgb(219, 220, 247)
+}
 form label {
   width: 80px;
   float: left;
@@ -131,7 +134,9 @@ $table = "releases";        // Name of table where actual release data is stored
 $host = "localhost";        // hostname of the mysql server
 $user = "admin";            // New MySQL user with privs for accessing the db
 $password = "password";     // DB access password, eventually there will be
-                            // real authentication
+// real authentication
+
+// TODO: see if the database already exists or if we have to create it.
 
 // Connect to the mysql server
 $link = mysql_connect("$host", "$user", "$password");
@@ -210,9 +215,15 @@ echo "<td align=\"left\"><b>Artist</b></td>\n";
 echo "<td alignt=\"left\"><b>Release</td></b>\n";
 echo "<td align=\"right\"><b>Link</b></td>\n";
 echo "</tr>\n";
+// While there's data to be fetched from the table, store it in the array $row 
+$table_idx = 0;       // Alternate row styles
 while ($row = mysql_fetch_assoc($result)){
     // create a table from these results
-    echo "\n<tr>";
+    if ($table_idx++ % 2 == 1){
+        echo "\n<tr>";
+    } else {
+        echo "\n<tr class=\"alt\">";
+    } 
     echo "<td align=\"left\">{$row['artist']}</td>\n";
     echo "<td align=\"left\">{$row['release_name']}</td>";
     echo "<td align=\"right\"><a href=\"{$row['link']}\">{$row['link']}</a></td>";
