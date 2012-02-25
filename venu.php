@@ -13,7 +13,7 @@
 </head>
 
 <body>
-
+<!-- TODO: Clean up all this CSS and move it to seperate files -->
 <style>
 div.block{
   overflow: hidden
@@ -127,16 +127,10 @@ echo "<p>This is very early software going through heavy development.";
 echo" <br>It is ".date("l\, jS \of F\, Y") . ".<p>";
 
 // One of the default databases on the MySQL system
-// Use this for database connectivity test
-$test_database = "mysql";   // The database used for testing during development
-$database = "venu";         // The main music database
-$table = "releases";        // Name of table where actual release data is stored
-$host = "localhost";        // hostname of the mysql server
-$user = "admin";            // New MySQL user with privs for accessing the db
-$password = "password";     // DB access password, eventually there will be
 // real authentication
 
 // TODO: see if the database already exists or if we have to create it.
+// Right now the system assumes it exists and dies if it doesn't
 
 // Connect to the mysql server
 $link = mysql_connect("$host", "$user", "$password");
@@ -158,6 +152,7 @@ if (!mysql_select_db($database, $link)){
 
 // Save all the user input from the Artist entry form
 if (isset($_POST['txtArtistName']) && isset($_POST['txtReleaseName']) && isset($_POST['txtLinkUrl'])) {
+    // Grab the user input into PHP vars
     $txtArtistName = $_POST['txtArtistName'];
     $txtReleaseName = $_POST['txtReleaseName'];
     $txtLinkUrl = $_POST['txtLinkUrl'];
@@ -218,7 +213,7 @@ echo "</tr>\n";
 // While there's data to be fetched from the table, store it in the array $row 
 $table_idx = 0;       // Alternate row styles
 while ($row = mysql_fetch_assoc($result)){
-    // create a table from these results
+    // Alternate row formatting
     if ($table_idx++ % 2 == 1){
         echo "\n<tr>";
     } else {
@@ -228,6 +223,10 @@ while ($row = mysql_fetch_assoc($result)){
     echo "<td align=\"left\">{$row['release_name']}</td>";
     echo "<td align=\"right\"><a href=\"{$row['link']}\">{$row['link']}</a></td>";
     echo "\n</tr>";
+    // Stop after a certain amount of results
+    if ($table_idx == 20){
+        break;
+    }
 }
 echo "</table><br>";
 
