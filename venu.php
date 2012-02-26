@@ -10,7 +10,6 @@
 </head>
 
 <body>
-<!-- TODO: Clean up all this CSS and move it to seperate files -->
 
 <div class="header">Venu Music Database <header class="right">A simple way to track music</header></div>
 <p>
@@ -49,43 +48,10 @@ if (!mysql_select_db($database, $link)){
     echo "<br>\nSelected database $database succesfully<br>\n";
 }
 
-// Save all the user input from the Artist entry form
-if (isset($_POST['txtArtistName']) && isset($_POST['txtReleaseName']) && isset($_POST['txtLinkUrl'])) {
-    // Grab the user input into PHP vars
-    $txtArtistName = $_POST['txtArtistName'];
-    $txtReleaseName = $_POST['txtReleaseName'];
-    $txtLinkUrl = $_POST['txtLinkUrl'];
-    // Sanitize some user input
-    $txtArtistName = htmlentities($txtArtistName);
-    $txtReleaseName = htmlentities($txtReleaseName);
-    $txtLinkUrl = htmlentities($txtLinkUrl);
-    // Display the user input -- DEBUG off
-    //echo "Your artist is $txtArtistName.<br>\n";
-    //echo "Your releasee is $txtReleaseName.<br>\n";
-    //echo "Your link is $txtLinkUrl.<br>\n";
-    //echo "<br>\n";
-    // Add the user input to the database
-    // MySQL command has the form:
-    // INSERT INTO releases(artist,release_name,link) VALUES('New Group','Group Release','http://newgroup.bandcamp.com/');
-    // Start building a query
-    $insertStart = sprintf("INSERT INTO %s(artist, release_name, link) ", mysql_real_escape_string($table)); 
-    $insertValues = sprintf("VALUES('%s', '%s', '%s');", mysql_real_escape_string($txtArtistName), mysql_real_escape_string($txtReleaseName), mysql_real_escape_string($txtLinkUrl));
-    $insertQuery = $insertStart . $insertValues;
-    $insertStatus = mysql_query($insertQuery);
-    if (!$insertStatus){
-        // Oops! something went wrong
-        echo "<p><b>Couldn't update the table!</b><p>";
-        echo "Tried to use: <pre>$insertQuery</pre><br>";
-        die("Bad insert: " . mysql_error());
-    }
-    unset($_POST);
-} else {
-echo "Release info not yet enerted.<p>";
-}
 // Main user input form
 echo <<<_END
 Add to the database: <br>
-<form method="post" action="venu.php" class="form">
+<form method="post" action="add.php" class="form">
 <p>
 <label for="txtArtistName">Artist: </label> <input name="txtArtistName"/></br>
 <label for="txtReleaseName">Release: </label> <input name="txtReleaseName"/></br>

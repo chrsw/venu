@@ -1,6 +1,5 @@
 <?php
-// placeholder
-// Use this for database connectivity test
+// Use this for database login
 $test_database = "mysql";   // The database used for testing during development
 $database = "venu";         // The main music database
 $table = "releases";        // Name of table where actual release data is stored
