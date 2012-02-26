@@ -4,5 +4,19 @@ venu
 This is a web-based tracking system for Music.
 Very early stages.
 
-
 PHP, MySQL, Apache and some type of Unix (or Unix compatible) required to run.
+Dev system:
+Mac OS X 10.7.2 Darwin Kernel Version 11.2.0: Tue Aug  9 20:54:00 PDT 2011; root:xnu-1699.24.8~1/RELEASE_X86_64 x86_64
+PHP 5.3.6 with Suhosin-Patch (cli) (built: Sep  8 2011 19:34:00)
+Apache/2.2.20 (Unix) DAV/2 PHP/5.3.6 with Suhosin-Patch
+
+Install:
+
+git clone git://github.com/chrsw/venu.git
+
+Plus, you may need to:
+Install PHP
+Start Apache
+Start MySQL
+
+Then point a browser to file://path/to/venu.php -or- http://localhost/path/to/venu.php

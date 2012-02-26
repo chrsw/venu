@@ -1,11 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- Dev system: -->
-<!-- Mac OS X 10.7.2 Darwin Kernel Version 11.2.0: Tue Aug  9 20:54:00 PDT 2011; root:xnu-1699.24.8~1/RELEASE_X86_64 x86_64 -->
-<!-- PHP 5.3.6 with Suhosin-Patch (cli) (built: Sep  8 2011 19:34:00) -->
-<!-- Apache/2.2.20 (Unix) DAV/2 PHP/5.3.6 with Suhosin-Patch -->
 
+<link rel="stylesheet" href="style.css" type="text/css" media="all"/>
 <head>
 
 <title>Venu Music Database</title>
@@ -14,104 +11,6 @@
 
 <body>
 <!-- TODO: Clean up all this CSS and move it to seperate files -->
-<style>
-div.block{
-  overflow: hidden
-}
-div.block label{
-  font-family: Verdana, Arial; 
-  width: 120px;
-  display: block;
-  float: left;
-  text-align: left
-}
-div.block .input{
-  font-family: Verdana, Arial;
-  width: 400px;
-  margin-left: 4px;
-  float: left
-}
-div.header{
-  background-color: #b0c4de;
-  color: #292980;
-  font-family: Verdana, Arial;
-  font-size: x-large;
-  font-style: normal;
-  font-weight: bolder;
-  margin: 2px;
-  padding-bottom: 2px;
-  padding-left: 12px;
-  padding-right: 2px;
-  padding-top: 2px;
-  text-align: left;
-  width: 90%
-} header.right {
-  font-size: small;
-  font-family: Verdana, Arial;
-  font-style: italic;
-  font-weight: lighter
-}
-div.footer{
-  background-color: #bbbbbb;
-  color: #292980;
-  font-family: Verdana, Arial;
-  font-size: smaller;
-  font-style: italic;
-  font-weight: lighter;
-  padding-bottom: 1px;
-  padding-left: 12px;
-  padding-right: 1px;
-  padding-top: 1px;
-  text-align: left;
-  width: 90%
-}
-div.sect1{
-  font-size: larger;
-  font-family: Verdana, Arial
-}
-table.results {
-  border-width: 4px;
-  border-spacing: 2px;
-  border-style: none;
-  border-color: gray;
-  border-collapse: collapse;
-  background-color: white;
-  font-family: Verdana, Arial;
-  font-size: smaller
-}
-table.results th {
-  border-width: 1px;
-  padding: 4px;
-  border-style: inset;
-  border-color: white;
-  background-color: rgb(194, 196, 238)
-}
-table.results td {
-  border-width: 1px;
-  padding: 4px;
-  border-style: inset;
-  border-color: white;
-  background-color: rgb(194, 196, 238)
-}
-table.results tr.alt td {
-  background-color: rgb(219, 220, 247)
-}
-form label {
-  width: 80px;
-  float: left;
-  text-align: right;
-  margin-right: 0.5em;
-  font-family: Verdana, Arial;
-  font-size: smaller;
-  display: block
-} .submit input {
-  margin-left: 432px;
-  width: 60px
-} input {
-  width: 400px;
-  font-family: Verdana, Arial
-}
-</style>
 
 <div class="header">Venu Music Database <header class="right">A simple way to track music</header></div>
 <p>
@@ -179,14 +78,14 @@ if (isset($_POST['txtArtistName']) && isset($_POST['txtReleaseName']) && isset($
         echo "Tried to use: <pre>$insertQuery</pre><br>";
         die("Bad insert: " . mysql_error());
     }
+    unset($_POST);
 } else {
 echo "Release info not yet enerted.<p>";
 }
 // Main user input form
 echo <<<_END
-<form method="post" action="venu.php"/>
 Add to the database: <br>
-<form action="venu.php" class="form">
+<form method="post" action="venu.php" class="form">
 <p>
 <label for="txtArtistName">Artist: </label> <input name="txtArtistName"/></br>
 <label for="txtReleaseName">Release: </label> <input name="txtReleaseName"/></br>
@@ -202,7 +101,7 @@ if(!$result){
     die('<p>Invalid query: ' . mysql_error());
 }
 // The query results are stored in the PHP var $result
-echo "<br>Query results:<br>";
+echo "<br>Current database<br>";
 // Build a table from the CSS defined above
 echo "\n<table class=\"results\">";
 echo "\n<tr>";
@@ -240,6 +139,6 @@ mysql_close($link);
 
 <p><p>
 <p><p>&nbsp;<p>
-<div class = "footer">&copy; <a href="mailto:chrisbw@gmail.com">Chris Williams</a> 2012</div>
+<div class = "footer">venu &copy; <a href="mailto:chrisbw@gmail.com">Chris Williams</a> 2012</div>
 </body>
 </html>
