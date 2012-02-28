@@ -79,14 +79,15 @@ echo "</tr>\n";
 $table_idx = 0;       // Alternate row styles
 while ($row = mysql_fetch_assoc($result)){
     // Alternate row formatting
-    if ($table_idx++ % 2 == 1){
+    if (($table_idx++ % 2) == 1){
         echo "\n<tr>";
     } else {
         echo "\n<tr class=\"alt\">";
     } 
     echo "<td align=\"left\">{$row['artist']}</td>\n";
     echo "<td align=\"left\">{$row['release_name']}</td>";
-    echo "<td align=\"right\"><a href=\"{$row['link']}\">{$row['link']}</a></td>";
+    // Open the link in a new window or tab
+    echo "<td align=\"right\"><a href=\"{$row['link']}\" target=\"_blank\">{$row['link']}</a></td>";
     echo "\n</tr>";
     // Stop after a certain amount of results
     if ($table_idx == 20){
