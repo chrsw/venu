@@ -53,10 +53,10 @@ echo <<<_END
 Add to the database: <br>
 <form method="post" action="add.php" class="form">
 <p>
-<label for="txtArtistName">Artist: </label> <input name="txtArtistName"/></br>
-<label for="txtReleaseName">Release: </label> <input name="txtReleaseName"/></br>
-<label for="txtLinkUrl">Link Url: </label> <input name="txtLinkUrl"/></br>
-<p class="submit"><input type="submit" value="Add" /></p>
+<label for="txtArtistName">Artist: </label> <input name="txtArtistName" class="input"/></br>
+<label for="txtReleaseName">Release: </label> <input name="txtReleaseName" class="input"/></br>
+<label for="txtLinkUrl">Link Url: </label> <input name="txtLinkUrl" class="input"/></br>
+<br><input type="submit" class="button" value="Add" /></br>
 </form>
 _END;
 
@@ -67,7 +67,7 @@ if(!$result){
     die('<p>Invalid query: ' . mysql_error());
 }
 // The query results are stored in the PHP var $result
-echo "<br>Current database<br>";
+echo "<br>";
 // Build a table from the CSS defined above
 echo "\n<table class=\"results\">";
 echo "\n<tr>";
@@ -75,7 +75,7 @@ echo "<td align=\"left\"><b>Artist</b></td>\n";
 echo "<td alignt=\"left\"><b>Release</td></b>\n";
 echo "<td align=\"right\"><b>Link</b></td>\n";
 echo "</tr>\n";
-// While there's data to be fetched from the table, store it in the array $row 
+// While there's data to be fetched from the table, store it in the associative array $row 
 $table_idx = 0;       // Alternate row styles
 while ($row = mysql_fetch_assoc($result)){
     // Alternate row formatting
@@ -107,5 +107,6 @@ mysql_close($link);
 <p><p>
 <p><p>&nbsp;<p>
 <div class = "footer">venu &copy; <a href="mailto:chrisbw@gmail.com">Chris Williams</a> 2012</div>
+<p>
 </body>
 </html>

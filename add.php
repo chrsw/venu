@@ -24,10 +24,22 @@ if (isset($_POST['txtArtistName']) && isset($_POST['txtReleaseName']) && isset($
     $txtArtistName = $_POST['txtArtistName'];
     $txtReleaseName = $_POST['txtReleaseName'];
     $txtLinkUrl = $_POST['txtLinkUrl'];
-    // Sanitize some user input
+    // Sanitize user input
     $txtArtistName = htmlentities($txtArtistName);
     $txtReleaseName = htmlentities($txtReleaseName);
     $txtLinkUrl = htmlentities($txtLinkUrl);
+    // Don't enter blank input
+    if((preg_match('/^$/',$txtArtistName)) || (preg_match('/^$/',$txtReleaseName))){
+        // Return to the main page without inserting the data
+        // Because either the artist name or the release name was blank.
+        header("Location: venu.php");
+        exit();
+    }
+    // Make sure the link entry is some type of URL looking thing
+    if(!preg_match('/(https?\:\/\/)?[a-z0-9-.]*\.[a-z{2,4}]/',$txtLinkUrl)){
+        header("Location: venu.php");
+        exit();
+    }
     // Add the user input to the database
     // MySQL command has the form:
     // INSERT INTO releases(artist,release_name,link) VALUES('New Group','Group Release','http://newgroup.bandcamp.com/');

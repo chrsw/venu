@@ -1,18 +1,25 @@
+body {
+  color: black;
+  background: rgb(245, 245, 245);
+}
+:link {
+        color: rgb(0,0,153;
+)}
 div.block{
-  overflow: hidden
+  overflow: hidden;
 }
 div.block label{
   font-family: Verdana, Arial; 
   width: 120px;
   display: block;
   float: left;
-  text-align: left
+  text-align: left;
 }
 div.block .input{
   font-family: Verdana, Arial;
   width: 400px;
   margin-left: 4px;
-  float: left
+  float: left;
 }
 div.header{
   background-color: #b0c4de;
@@ -32,7 +39,7 @@ div.header{
   font-size: small;
   font-family: Verdana, Arial;
   font-style: italic;
-  font-weight: lighter
+  font-weight: lighter;
 }
 div.footer{
   background-color: #bbbbbb;
@@ -46,11 +53,11 @@ div.footer{
   padding-right: 1px;
   padding-top: 1px;
   text-align: left;
-  width: 98%
+  width: 98%;
 }
 div.sect1{
   font-size: larger;
-  font-family: Verdana, Arial
+  font-family: Verdana, Arial;
 }
 table.results {
   border-width: 4px;
@@ -60,37 +67,50 @@ table.results {
   border-collapse: collapse;
   background-color: white;
   font-family: Verdana, Arial;
-  font-size: smaller
+  font-size: smaller;
 }
 table.results th {
   border-width: 1px;
   padding: 4px;
   border-style: inset;
   border-color: white;
-  background-color: rgb(194, 196, 238)
+  background-color: rgb(194, 196, 238);
 }
 table.results td {
   border-width: 1px;
   padding: 4px;
   border-style: inset;
   border-color: white;
-  background-color: rgb(194, 196, 238)
+  background-color: rgb(194, 196, 194);
 }
 table.results tr.alt td {
-  background-color: rgb(219, 220, 247)
+  background-color: rgb(219, 220, 219);
 }
-form label {
-  width: 80px;
+label {
   float: left;
-  text-align: right;
+  text-align: left;
   margin-right: 0.5em;
   font-family: Verdana, Arial;
   font-size: smaller;
-  display: block
-} .submit input {
-  margin-left: 432px;
-  width: 60px
-} input {
-  width: 400px;
-  font-family: Verdana, Arial
+  display: block;
+  width: 6em;
+}
+
+.input {
+  width: 30%;
+  font-family: Verdana, Arial;
+  background: #FFC;
+  margin-left: 1.5em;
+}
+
+.button {
+  background-color: rgb(219, 220, 219);
+  border: 1px solid #999;
+  color: black;
+  font-family: Verdana, Arial;
+  font-size: 11px;
+  font-weight: bold;
+  height: 24px
+  width: 60px;
+  margin-left: 102px
 }
