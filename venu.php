@@ -1,3 +1,7 @@
+<?php
+
+// Main page HTML header
+echo <<<_END
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -13,16 +17,16 @@
 
 <div class="header">Venu Music Database <header class="right">A simple way to track music</header></div>
 <p>
+_END;
 
-<!-- Start the main PHP script... -->
-<?php
 require_once 'db_login.php';    // In the future store MySQL DB login info in seperate file
+$table_length = 50;
 
 // Eastern timezone
 date_default_timezone_set(EST);
 echo "<br>Welcome to Venu, a web based system for tracking music. ";
-echo "<p>This is very early software going through heavy development.";
-echo" <br>It is ".date("l\, jS \of F\, Y") . ".<p>";
+//echo "\n<p>This is very early software going through heavy development.";
+//echo "\n<br>It is ".date("l\, jS \of F\, Y") . ".<p>";
 
 // One of the default databases on the MySQL system
 // real authentication
@@ -37,20 +41,22 @@ if (!$link){
 }
 
 // Didn't die, print a status message
-echo "\n<br>Connected to database on $host succesfully<br>\n";
+//echo "\n<br>Connected to database on $host succesfully<br>\n";
 
 // Try to connect to a database
 if (!mysql_select_db($database, $link)){
     echo "\n<p>Could not select database" . $database;
+    echo "\n<br>";
+    printf("%s", mysql_error());
     mysql_close($link);
     exit;
 } else {
-    echo "<br>\nSelected database $database succesfully<br>\n";
+//    echo "<br>\nSelected database $database succesfully<br>\n";
 }
 
 // Main user input form
 echo <<<_END
-Add to the database: <br>
+<p>Add to the database: <br>
 <form method="post" action="add.php" class="form">
 <p>
 <label for="txtArtistName">Artist: </label> <input name="txtArtistName" class="input"/></br>
@@ -62,7 +68,7 @@ _END;
 
 // A simple query -- Send a simple SQL query to the MySQL server and
 // print the results into an HTML table.
-$result = mysql_query('SELECT artist, release_name, link FROM releases');
+$result = mysql_query('SELECT DISTINCT artist, release_name, link FROM releases');
 if(!$result){
     die('<p>Invalid query: ' . mysql_error());
 }
@@ -90,7 +96,7 @@ while ($row = mysql_fetch_assoc($result)){
     echo "<td align=\"right\"><a href=\"{$row['link']}\" target=\"_blank\">{$row['link']}</a></td>";
     echo "\n</tr>";
     // Stop after a certain amount of results
-    if ($table_idx == 20){
+    if ($table_idx == $table_length){
         break;
     }
 }
