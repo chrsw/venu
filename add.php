@@ -1,7 +1,6 @@
 <?php
 /*
- * Process input and bounce back to the main venu page
- *
+ * add.php: Process input and bounce back to the main venu page
  */
 
 require_once 'db_login.php';
@@ -25,6 +24,8 @@ if (isset($_POST['txtArtistName']) && isset($_POST['txtReleaseName']) && isset($
     $txtReleaseName = $_POST['txtReleaseName'];
     $txtLinkUrl = $_POST['txtLinkUrl'];
     // Sanitize user input
+    // Might need to do a better job of extracting dangerous user input.
+    // The docs on htmlentities() make it seem like it may not be sufficient.
     $txtArtistName = htmlentities($txtArtistName);
     $txtReleaseName = htmlentities($txtReleaseName);
     $txtLinkUrl = htmlentities($txtLinkUrl);
