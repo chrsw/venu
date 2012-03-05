@@ -1,11 +1,25 @@
+/*
+ * style.ccs 
+ * Style descriptions for the site
+ */
+
+
+/* main style format */
 body {
   color: black;
   background: rgb(245, 245, 245);
   font-size: 0.9em;
 }
-:link {
-        color: rgb(0,0,153;
-)}
+/* links */
+a {
+  text-decoration: none;
+}
+a:link {
+  color: rgb(0,0,153);
+}
+a:hover {
+    text-decoration: underline;
+}
 div.block{
   overflow: hidden;
 }
@@ -22,6 +36,8 @@ div.block .input{
   margin-left: 4px;
   float: left;
 }
+
+/* top banner */
 div.header{
   background-color: #b0c4de;
   color: #292980;
@@ -42,6 +58,8 @@ div.header{
   font-style: italic;
   font-weight: lighter;
 }
+
+/* bottom footer */
 div.footer{
   background-color: #bbbbbb;
   color: #292980;
@@ -69,6 +87,7 @@ table.results {
   background-color: white;
   font-family: Verdana, Arial;
   font-size: smaller;
+  width: 100%;
 }
 table.results th {
   border-width: 1px;

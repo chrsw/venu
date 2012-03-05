@@ -19,23 +19,26 @@ echo <<<_END
 <p>
 _END;
 
-require_once 'db_login.php';    // In the future store MySQL DB login info in seperate file
+// Read the database access info from a file in the form of
+// host:username:password:database:table
+$db_auth_file_name = "db_auth.txt";
+$auth_info = file_get_contents("$db_auth_file_name") or die("Could not get database authorization info.\n<br>");
+// Store the password info across some string vars
+list($host, $username, $password, $database, $table) = split(":",$auth_info);
+
 $table_length = 50;
 
 // Eastern timezone
 date_default_timezone_set(EST);
 echo "<br>Welcome to Venu, a web based system for tracking music. ";
-//echo "\n<p>This is very early software going through heavy development.";
-//echo "\n<br>It is ".date("l\, jS \of F\, Y") . ".<p>";
+echo " It is ".date("l\, jS \of F\, Y") . ".<p>";
 
-// One of the default databases on the MySQL system
-// real authentication
 
 // TODO: see if the database already exists or if we have to create it.
 // Right now the system assumes it exists and dies if it doesn't
 
 // Connect to the mysql server
-$link = mysql_connect("$host", "$user", "$password");
+$link = mysql_connect("$host", "$username", "$password");
 if (!$link){
     die('Could not connect to the database: ' . mysql_error());
 }
@@ -59,9 +62,9 @@ echo <<<_END
 <p>Add to the database: <br>
 <form method="post" action="add.php" class="form">
 <p>
-<label for="txtArtistName">Artist: </label> <input name="txtArtistName" class="input"/></br>
-<label for="txtReleaseName">Release: </label> <input name="txtReleaseName" class="input"/></br>
-<label for="txtLinkUrl">Link Url: </label> <input name="txtLinkUrl" class="input"/></br>
+<label for="txtArtistName">Artist: </label> <input name="txtArtistName" class="input"/><br>
+<label for="txtReleaseName">Release: </label> <input name="txtReleaseName" class="input"/><br>
+<label for="txtLinkUrl">Link Url: </label> <input name="txtLinkUrl" class="input"/><br>
 <br><input type="submit" class="button" value="Add" /></br>
 </form>
 _END;
@@ -74,7 +77,7 @@ if(!$result){
 }
 // The query results are stored in the PHP var $result
 echo "<br>";
-// Build a table from the CSS defined above
+// Build an HTML table from the CSS defined above
 echo "\n<table class=\"results\">";
 echo "\n<tr>";
 echo "<td align=\"left\"><b>Artist</b></td>\n";
@@ -108,7 +111,7 @@ mysql_free_result($result);
 // Close the connection to the server
 mysql_close($link);
 
-?> <!-- End of db PHP block -->
+?>
 
 <p><p>
 <p><p>&nbsp;<p>
