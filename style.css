@@ -3,7 +3,6 @@
  * Style descriptions for the site
  */
 
-
 /* main style format */
 body {
   color: black;
@@ -89,20 +88,21 @@ table.results {
   font-size: smaller;
   width: 100%;
 }
+/* table to display the database */
 table.results th {
   border-width: 1px;
   padding: 4px;
-  border-style: inset;
-  border-color: white;
+  border-style: none;
+  /*border-color: white;*/
   background-color: rgb(194, 196, 238);
 }
 table.results td {
   border-width: 1px;
   padding: 4px;
-  border-style: inset;
-  border-color: white;
+  border-style: none;
   background-color: rgb(194, 196, 194);
 }
+/* alternate row colors */
 table.results tr.alt td {
   background-color: rgb(219, 220, 219);
 }
@@ -115,14 +115,14 @@ label {
   display: block;
   width: 6em;
 }
-
+/* user insert into database section */
 .input {
   width: 30%;
   font-family: Verdana, Arial;
   background: #FFC;
   margin-left: 1.5em;
 }
-
+/* user action buttons */
 .button {
   background-color: rgb(219, 220, 219);
   border: 1px solid #999;

@@ -33,7 +33,6 @@ date_default_timezone_set(EST);
 echo "<br>Welcome to Venu, a web based system for tracking music. ";
 echo " It is ".date("l\, jS \of F\, Y") . ".<p>";
 
-
 // TODO: see if the database already exists or if we have to create it.
 // Right now the system assumes it exists and dies if it doesn't
 
@@ -71,23 +70,25 @@ _END;
 
 // A simple query -- Send a simple SQL query to the MySQL server and
 // print the results into an HTML table.
-$result = mysql_query('SELECT DISTINCT artist, release_name, link FROM releases');
+$result = mysql_query('SELECT DISTINCT artist, release_name, time_added, link FROM releases ORDER BY time_added DESC');
 if(!$result){
     die('<p>Invalid query: ' . mysql_error());
 }
 // The query results are stored in the PHP var $result
 echo "<br>";
+
 // Build an HTML table from the CSS defined above
 echo "\n<table class=\"results\">";
 echo "\n<tr>";
 echo "<td align=\"left\"><b>Artist</b></td>\n";
 echo "<td alignt=\"left\"><b>Release</td></b>\n";
+echo "<td align=\"center\"><b>Added</b></td>\n";
 echo "<td align=\"right\"><b>Link</b></td>\n";
 echo "</tr>\n";
 // While there's data to be fetched from the table, store it in the associative array $row 
 $table_idx = 0;       // Alternate row styles
 while ($row = mysql_fetch_assoc($result)){
-    // Alternate row formatting
+    // Alternate row formatting for visibility
     if (($table_idx++ % 2) == 1){
         echo "\n<tr>";
     } else {
@@ -95,6 +96,8 @@ while ($row = mysql_fetch_assoc($result)){
     } 
     echo "<td align=\"left\">{$row['artist']}</td>\n";
     echo "<td align=\"left\">{$row['release_name']}</td>";
+    $entry_age = findage($row['time_added']);
+    echo "<td align=\"center\">$entry_age</td>";
     // Open the link in a new window or tab
     echo "<td align=\"right\"><a href=\"{$row['link']}\" target=\"_blank\">{$row['link']}</a></td>";
     echo "\n</tr>";
@@ -110,6 +113,38 @@ mysql_free_result($result);
 
 // Close the connection to the server
 mysql_close($link);
+
+// Convert the time diff_unix_time_now between now and the time a link was submitted into a
+// short, user-friendly statement 
+function findage($date)
+{
+    $time_units = array("second", "minute", "hour", "day", "week", "month", "year");
+    // Time divisors, rough estimates
+    $lengths = array("60","60","24","7","4.35","12","10");
+    // Rhe current time
+    $now = time();
+    // Convert to unix format, # of secs since Jan 1, 1970
+    $unix_time  = strtotime($date);
+    $diff_unix_time_now = $now - $unix_time;
+    // Find the appropriate time unit to print
+    for($j = 0; $diff_unix_time_now >= $lengths[$j] && $j < count($lengths)-1; $j++) {
+        $diff_unix_time_now /= $lengths[$j];
+    }
+    $diff_unix_time_now = round($diff_unix_time_now);
+    if($diff_unix_time_now != 1) {
+        $time_units[$j].= "s";
+    }
+    // Print a short statement in the table instead of the acutal time if the
+    // entry has just been added
+    if(($diff_unix_time_now < 30) && ($j == 0)){
+        return "just now";
+    } else {
+        return "$diff_unix_time_now $time_units[$j] ago";
+    }
+}
+
+
+
 
 ?>
 
