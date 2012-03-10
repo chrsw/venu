@@ -8,6 +8,7 @@ body {
   color: black;
   background: rgb(245, 245, 245);
   font-size: 0.9em;
+  font-family: Verdana, Arial;
 }
 /* links */
 a {
@@ -38,15 +39,15 @@ div.block .input{
 
 /* top banner */
 div.header{
-  background-color: #b0c4de;
+  /*background-color: #b0c4de;*/
   color: #292980;
   font-family: Verdana, Arial;
   font-size: x-large;
   font-style: normal;
   font-weight: bolder;
   margin: 2px;
-  padding-bottom: 2px;
-  padding-left: 12px;
+  /*padding-bottom: 2px;*/
+  padding-left: 2px;
   padding-right: 2px;
   padding-top: 2px;
   text-align: left;
