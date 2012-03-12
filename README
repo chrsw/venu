@@ -10,9 +10,9 @@ Dev system:
 - Mac OS X 10.7.2 Darwin Kernel Version 11.2.0: Tue Aug  9 20:54:00 PDT 2011; root:xnu-1699.24.8~1/RELEASE_X86_64 x86_64
 - PHP 5.3.6 with Suhosin-Patch (cli) (built: Sep  8 2011 19:34:00)
 - Apache/2.2.20 (Unix) DAV/2 PHP/5.3.6 with Suhosin-Patch
+- 5.5.20 MySQL Community Server (GPL)
 
 Install:
-
 git clone git://github.com/chrsw/venu.git
 
 Plus, you may need to:
@@ -20,10 +20,7 @@ Install PHP
 Start Apache
 Start MySQL
 
-To view point a browser to file://path/to/venu.php -or- http://localhost/path/to/venu.php
-
-Chris Williams
-chrisbw@alum.rit.edu
+To view point a browser to http://localhost/path/to/venu
 
 Todo:
 
@@ -33,3 +30,7 @@ Count the # of database connects in the last hours/days
 Make sure XHTML or HTML output is valid
 Add genre field to the table
 Test system on other platforms
+
+Distributed under the terms of the GPL.
+Chris Williams
+chrisbw@alum.rit.edu

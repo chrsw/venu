@@ -30,7 +30,7 @@ list($host, $username, $password, $database, $table) = split(":",$auth_info);
 $table_length = 50;
 
 // Eastern timezone
-date_default_timezone_set(EST);
+date_default_timezone_set('America/New_York');
 
 // Body style banner message
 //echo "<br>Welcome to Venu, a web based system for tracking music. ";
@@ -63,7 +63,12 @@ $rows_junk = mysql_query("SELECT SQL_CALC_FOUND_ROWS * FROM releases LIMIT 1");
 $rows_res = mysql_query("SELECT FOUND_ROWS()");
 $rows_total = mysql_fetch_row($rows_res);
 echo "<font style=\"font-size:smaller\"><b>$rows_total[0] releases in the database &middot ";
-echo date("g:m D\, M d\, Y");
+echo "Server time: ". date("g:i D\, M d\, Y") . " &middot ";
+// Get db server, queries
+// Might one want to do "in the past 24 hours" or something
+$stats = explode('  ', mysql_stat($link));
+$queries = preg_split("/ /", $stats[2]);
+echo " $queries[1] queries";
 echo "</b></font>";
 
 // Main user input form
@@ -81,7 +86,7 @@ _END;
 
 // A simple query -- Send a simple SQL query to the MySQL server and
 // print the results into an HTML table.
-$query_limit = 20;
+$query_limit = 30;
 $result = mysql_query("SELECT DISTINCT artist, release_name, time_added, link FROM releases ORDER BY time_added DESC LIMIT $query_limit");
 if(!$result){
     die('<p>Invalid query: ' . mysql_error());
@@ -89,13 +94,13 @@ if(!$result){
 // The query results are stored in the PHP var $result
 echo "<br>";
 
-// Build an HTML table from the CSS defined above
-echo "\n<table class=\"results\">";
-echo "\n<tr>";
-echo "<td align=\"left\"><b>Artist - Release</b></td>\n";
+// Build an HTML table from the database and CSS in style.css
+print("\n<table class=\"results\">");
+print("\n<tr>");
+print("<td align=\"left\"><b>Artist - Release</b></td>\n");
 //echo "<td alignt=\"left\"><b>Release</td></b>\n";
 echo "<td align=\"center\"><b>Added</b></td>\n";
-echo "<td align=\"right\"><b>Link</b></td>\n";
+echo "<td align=\"right\"><b>Host</b></td>\n";
 echo "</tr>\n";
 // While there's data to be fetched from the table, store it in the associative array $row 
 $table_idx = 0;       // Alternate row styles
@@ -106,12 +111,18 @@ while ($row = mysql_fetch_assoc($result)){
     } else {
         echo "\n<tr class=\"alt\">";
     } 
-    print("<td align=\"left\">{$row['artist']} - {$row['release_name']}</td>\n");
+    print("<td align=\"left\"><a href=\"{$row["link"]}\" target=\"_black\">{$row['artist']} - {$row['release_name']}</a></td>\n");
     //echo "<td align=\"left\">{$row['release_name']}</td>";
     $entry_age = findage($row['time_added']);
     print("<td align=\"center\">$entry_age</td>");
     // Open the link in a new window or tab
-    print("<td align=\"right\"><a href=\"{$row['link']}\" target=\"_blank\">{$row['link']}</a></td>\n</tr>\n");
+    // Todo: Show only the host instead of the full url
+    $url = $row["link"];
+    $domain = splitUrl($url, "domain");
+    //preg_match("/[0-9a-zA-Z]+\.[0-9a-zA-Z]+$/", $url, $domain);
+    print("<td align=\"right\">$domain</td>\n</tr>\n");
+    //echo "<td align=\"right\">getDomain($url)</td>\n</tr>\n";
+    //echo "getDomain($url)";
     // Stop after a certain amount of results
     if ($table_idx == $table_length){
         break;
@@ -151,8 +162,9 @@ function findage($date)
         $diff_unix_time_now /= $lengths[$units_idx];
     }
     $diff_unix_time_now = round($diff_unix_time_now);
+    // Turn the word to plural if there is more than one of a unit
     if($diff_unix_time_now != 1) {
-        $time_units[$units_idx].= "s";
+        $time_units[$units_idx] .= "s";
     }
     // Print a short statement in the table instead of the acutal time if the
     // entry has just been added
@@ -163,6 +175,37 @@ function findage($date)
     }
 }
 
+/*
+ * Get the components of a url
+ * */
+function splitUrl($url, $component){
+    // regex to split the url into an array
+    preg_match('/^(ftp|https?):\/\/([^\/:]+)(?: :(\d+))?/x', $url, $matches);
+    $protocol = $matches[1];
+    $host = $matches[2];
+    $port = $matches[3];
+    // return a piece of the url depending on what the user wanted
+    switch($component):
+        case "protocol":
+            $url_component = $protocol;
+            break;
+        case "host":
+            $url_component = $host;
+            break;
+        case "port":
+            $url_component = $port;
+            break;
+        case "domain":
+            preg_match('/([0-9a-zA-Z]+\.[0-9a-zA-Z]+)$/', $host, $domain);
+            $url_component = $domain[1];
+            break;
+        default:
+            $url_component = "";
+    endswitch;
+    return $url_component;
+}
+
+// Main footer
 print <<<_END
 <p><p>&nbsp;<p>
 <div class = "footer">venu &copy; <a href="mailto:chrisbw@gmail.com">Chris Williams</a> 2012</div>

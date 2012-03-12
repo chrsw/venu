@@ -1,6 +1,6 @@
 <?php
 /*
- * add.php: Process input and bounce back to the main venu page
+ * add.php: Process input, insert into database and bounce back to the main venu page
  */
 
 require_once 'db_login.php';
@@ -37,7 +37,7 @@ if (isset($_POST['txtArtistName']) && isset($_POST['txtReleaseName']) && isset($
         exit();
     }
     // Make sure the link entry is some type of URL looking thing
-    if(!preg_match('/(https?\:\/\/)?[a-z0-9-.]*\.[a-z{2,4}]/',$txtLinkUrl)){
+    if(!preg_match('/((ftp|http)s?\:\/\/)?[a-z0-9-.]*\.[a-z{2,4}]/',$txtLinkUrl)){
         header("Location: venu.php");
         exit();
     }
@@ -50,7 +50,7 @@ if (isset($_POST['txtArtistName']) && isset($_POST['txtReleaseName']) && isset($
     $insertQuery = $insertStart . $insertValues;
     $insertStatus = mysql_query($insertQuery);
     if (!$insertStatus){
-        // Oops! something went wrong
+        // Oops! something went wrong with the database insertion
         die("Bad insert: " . mysql_error());
     }
     unset($_POST);
