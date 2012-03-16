@@ -2,13 +2,22 @@
  * style.ccs 
  * Style descriptions for the site
  */
-
+* {
+  margin: 1;
+}
 /* main style format */
-body {
+html, body {
+  height: 98%;
   color: black;
   background: rgb(245, 245, 245);
   font-size: 0.9em;
   font-family: Verdana, Arial;
+}
+.wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -4em;
 }
 /* links */
 a {
@@ -59,21 +68,7 @@ div.header{
   font-weight: lighter;
 }
 
-/* bottom footer */
-div.footer{
-  background-color: #bbbbbb;
-  color: #292980;
-  font-family: Verdana, Arial;
-  font-size: smaller;
-  font-style: italic;
-  font-weight: lighter;
-  padding-bottom: 1px;
-  padding-left: 12px;
-  padding-right: 1px;
-  padding-top: 1px;
-  text-align: left;
-  width: 98%;
-}
+
 div.sect1{
   font-size: larger;
   font-family: Verdana, Arial;
@@ -88,6 +83,17 @@ table.results {
   font-family: Verdana, Arial;
   font-size: smaller;
   width: 100%;
+}
+
+/* make the footer "stick" to the bottom of the page */
+.footer, .push {
+  height: 4em;
+}
+.footer {
+  font-size: smaller;
+  font-style italic;
+  font-weight: lighter;
+  font-family: Verdana, Arial;
 }
 /* table to display the database */
 table.results th {

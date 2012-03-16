@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * Create a table showing the latest entries into the database
+ * Offer links for uers to search the database and view results,
+ * sort the database, add links to the database, on a simple
+ * page/interface.
+ */
+
 // Main page HTML header
 echo <<<_END
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -14,8 +21,8 @@ echo <<<_END
 </head>
 
 <body>
-
 <div class="header">Venu Music Database</div>
+<div class="wrapper">
 _END;
 
 // Read the database access info from a file in the form of
@@ -32,11 +39,7 @@ $table_length = 50;
 // Eastern timezone
 date_default_timezone_set('America/New_York');
 
-// Body style banner message
-//echo "<br>Welcome to Venu, a web based system for tracking music. ";
-
-// TODO: see if the database already exists or if we have to create it.
-// Right now the system assumes it exists and dies if it doesn't
+// Assume the database is already setup
 
 // Connect to the mysql server
 $link = mysql_connect("$host", "$username", "$password");
@@ -53,54 +56,72 @@ if (!mysql_select_db($database, $link)){
     echo "\n<br>";
     printf("%s", mysql_error());
     mysql_close($link);
+
     exit;
 } else {
 //    echo "<br>\nSelected database $database succesfully<br>\n";
 }
 
 // Sub banner showing site stats. Size of database. Time.
-$rows_junk = mysql_query("SELECT SQL_CALC_FOUND_ROWS * FROM releases LIMIT 1");
-$rows_res = mysql_query("SELECT FOUND_ROWS()");
-$rows_total = mysql_fetch_row($rows_res);
-echo "<font style=\"font-size:smaller\"><b>$rows_total[0] releases in the database &middot ";
-echo "Server time: ". date("g:i D\, M d\, Y") . " &middot ";
+// Switch to this command, should be faster:
+$results_info = mysql_query("SELECT TABLE_NAME, TABLE_TYPE, TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE()");
+//$rows_junk = mysql_query("SELECT SQL_CALC_FOUND_ROWS * FROM releases LIMIT 1");
+//$rows_res = mysql_query("SELECT FOUND_ROWS()");
+//$rows_total = mysql_fetch_row($rows_res);
+$row_info = mysql_fetch_assoc($results_info);
+echo "<font style=\"font-size:smaller\"><b>Releases in database: {$row_info['TABLE_ROWS']} &middot ";
+echo "Page generated: ". date("g:i D\, M dS") . " &middot ";
 // Get db server, queries
 // Might one want to do "in the past 24 hours" or something
 $stats = explode('  ', mysql_stat($link));
 $queries = preg_split("/ /", $stats[2]);
-echo " $queries[1] queries";
+echo " $stats[7]";
 echo "</b></font>";
 
-// Main user input form
-echo <<<_END
-<p>Add to the database: <br>
-<form method="post" action="add.php" class="form">
-<p>
-<label for="txtArtistName">Artist: </label> <input name="txtArtistName" class="input"/><br>
-<label for="txtReleaseName">Release: </label> <input name="txtReleaseName" class="input"/><br>
-<label for="txtLinkUrl">Link Url: </label> <input name="txtLinkUrl" class="input"/><br>
-<!-- Need to fix the location of this add button -->
-<br><input type="submit" class="button" value="Add" /></br>
-</form>
-_END;
+
+// Links to other features and parts of the system
+echo "\n<p><a href=\"venu.php\">Latest</a>";
+echo "&nbsp";
+echo "&nbsp";
+echo "&nbsp";
+echo "|";
+echo "&nbsp";
+echo "&nbsp";
+echo "&nbsp";
+echo "<a href=\"add.php\">Add</a>";
+echo "&nbsp";
+echo "&nbsp";
+echo "&nbsp";
+echo "|";
+echo "&nbsp";
+echo "&nbsp";
+echo "&nbsp";
+echo "<a href=\"search.php\">Search</a>\n";
+echo "&nbsp";
+echo "&nbsp";
+echo "&nbsp";
+echo "|";
+echo "&nbsp";
+echo "&nbsp";
+echo "&nbsp";
+echo "<a href=\"about.php\">About</a>\n";
 
 // A simple query -- Send a simple SQL query to the MySQL server and
 // print the results into an HTML table.
 $query_limit = 30;
-$result = mysql_query("SELECT DISTINCT artist, release_name, time_added, link FROM releases ORDER BY time_added DESC LIMIT $query_limit");
+$result = mysql_query("SELECT DISTINCT artist, release_name, time_added, link, rid FROM releases ORDER BY time_added DESC LIMIT $query_limit");
 if(!$result){
     die('<p>Invalid query: ' . mysql_error());
 }
 // The query results are stored in the PHP var $result
-echo "<br>";
 
 // Build an HTML table from the database and CSS in style.css
 print("\n<table class=\"results\">");
 print("\n<tr>");
 print("<td align=\"left\"><b>Artist - Release</b></td>\n");
 //echo "<td alignt=\"left\"><b>Release</td></b>\n";
-echo "<td align=\"center\"><b>Added</b></td>\n";
-echo "<td align=\"right\"><b>Host</b></td>\n";
+echo "<td align=\"center\"><b>Age</b></td>\n";
+echo "<td align=\"right\"><b>Link</b></td>\n";
 echo "</tr>\n";
 // While there's data to be fetched from the table, store it in the associative array $row 
 $table_idx = 0;       // Alternate row styles
@@ -111,7 +132,7 @@ while ($row = mysql_fetch_assoc($result)){
     } else {
         echo "\n<tr class=\"alt\">";
     } 
-    print("<td align=\"left\"><a href=\"{$row["link"]}\" target=\"_black\">{$row['artist']} - {$row['release_name']}</a></td>\n");
+    print("<td align=\"left\"><a href=view.php?rid={$row['rid']}>{$row['artist']} - {$row['release_name']}</a></td>\n");
     //echo "<td align=\"left\">{$row['release_name']}</td>";
     $entry_age = findage($row['time_added']);
     print("<td align=\"center\">$entry_age</td>");
@@ -120,7 +141,7 @@ while ($row = mysql_fetch_assoc($result)){
     $url = $row["link"];
     $domain = splitUrl($url, "domain");
     //preg_match("/[0-9a-zA-Z]+\.[0-9a-zA-Z]+$/", $url, $domain);
-    print("<td align=\"right\">$domain</td>\n</tr>\n");
+    print("<td align=\"right\"><a href=\"{$row["link"]}\" target=\"_blank\">$domain &raquo;</a></td>\n</tr>\n");
     //echo "<td align=\"right\">getDomain($url)</td>\n</tr>\n";
     //echo "getDomain($url)";
     // Stop after a certain amount of results
@@ -171,7 +192,7 @@ function findage($date)
     if(($diff_unix_time_now < 10) && ($units_idx == 0)){
         return "just now";
     } else {
-        return "$diff_unix_time_now {$time_units[$units_idx]} ago";
+        return "$diff_unix_time_now {$time_units[$units_idx]}";
     }
 }
 
@@ -179,7 +200,8 @@ function findage($date)
  * Get the components of a url
  * */
 function splitUrl($url, $component){
-    // regex to split the url into an array
+        // regex to split the url into protocol, host and port.
+        // calculate the domain after.
     preg_match('/^(ftp|https?):\/\/([^\/:]+)(?: :(\d+))?/x', $url, $matches);
     $protocol = $matches[1];
     $host = $matches[2];
@@ -196,19 +218,30 @@ function splitUrl($url, $component){
             $url_component = $port;
             break;
         case "domain":
+            // Pick out the domain from the URI (domain.tld)
             preg_match('/([0-9a-zA-Z]+\.[0-9a-zA-Z]+)$/', $host, $domain);
             $url_component = $domain[1];
             break;
         default:
+            // Send nothing back without a second argument
             $url_component = "";
     endswitch;
     return $url_component;
 }
 
+/*
+ * Something went wrong, exit gracefully by finishing out the html
+ */
+function early_exit() {
+
+}
+
+
 // Main footer
 print <<<_END
-<p><p>&nbsp;<p>
-<div class = "footer">venu &copy; <a href="mailto:chrisbw@gmail.com">Chris Williams</a> 2012</div>
+<div class="push"></div>
+</div> <!-- End of wrapper -->
+<div class="footer">venu &copy; 2012 <a href="mailto:chrisbw@gmail.com">Chris Williams</a></div>
 <p>
 </body>
 </html>
