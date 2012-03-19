@@ -56,6 +56,7 @@ if (isset($_POST['txtArtistName']) && isset($_POST['txtReleaseName']) && isset($
     unset($_POST);
 }
 
+mysql_close($link);
 header("Location: venu.php");
 exit();
 ?>

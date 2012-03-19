@@ -7,6 +7,11 @@
  * page/interface.
  */
 
+// Get the start time for page load/php processing
+$time = microtime();
+$time = explode(' ', $time);
+$start = $time[1] + $time[0];
+
 // Main page HTML header
 echo <<<_END
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -52,14 +57,14 @@ if (!$link){
 
 // Try to connect to a database
 if (!mysql_select_db($database, $link)){
+    // Couldn't connect to the MySQL dbase
     echo "\n<p>Could not select database" . $database;
     echo "\n<br>";
     printf("%s", mysql_error());
     mysql_close($link);
-
     exit;
 } else {
-//    echo "<br>\nSelected database $database succesfully<br>\n";
+  // successful connection
 }
 
 // Sub banner showing site stats. Size of database. Time.
@@ -236,12 +241,17 @@ function early_exit() {
 
 }
 
+// Now that the page is almost completely generated, get the time
+$time = microtime();
+$time = explode(' ', $time);
+$finish = $time[1] + $time[0];
+$process_time = round(($finish - $start), 8);
 
 // Main footer
 print <<<_END
 <div class="push"></div>
 </div> <!-- End of wrapper -->
-<div class="footer">venu &copy; 2012 <a href="mailto:chrisbw@gmail.com">Chris Williams</a></div>
+<div class="footer">Venu &copy; 2012 <a href="mailto:chrisbw@gmail.com">Chris Williams</a><div class="perf">Page generated in $process_time seconds</div></div>
 <p>
 </body>
 </html>

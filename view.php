@@ -65,7 +65,10 @@ if(!$result){
         print("<b>Added:</b>{$row['time_added']}<br>\n");
         print("<b>Archive password:</b><br>\n");
         print("<b>Comment:</b><br>\n");
+    } else {
+        print("\n<p>Can't find release info!\n<br>\n");
     }
+    
 }
 
 echo "<br><a href=\"venu.php\">Return</a>";

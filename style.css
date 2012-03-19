@@ -95,6 +95,10 @@ table.results {
   font-weight: lighter;
   font-family: Verdana, Arial;
 }
+
+.perf {
+  text-align: right;
+}
 /* table to display the database */
 table.results th {
   border-width: 1px;
