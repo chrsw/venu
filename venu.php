@@ -241,6 +241,23 @@ function early_exit() {
 
 }
 
+/* 
+ * Start a timer
+ */
+function timer_start()
+{
+
+}
+
+/*
+ * Stop a timer
+ */
+function timer_stop()
+{
+
+}
+
+
 // Now that the page is almost completely generated, get the time
 $time = microtime();
 $time = explode(' ', $time);
@@ -251,7 +268,7 @@ $process_time = round(($finish - $start), 8);
 print <<<_END
 <div class="push"></div>
 </div> <!-- End of wrapper -->
-<div class="footer">Venu &copy; 2012 <a href="mailto:chrisbw@gmail.com">Chris Williams</a><div class="perf">Page generated in $process_time seconds</div></div>
+<div class="footer"><p class="aboutleft">Venu &copy; 2012 <a href="mailto:chrisbw@gmail.com">Chris Williams</a></p><p class="perfright">Page generated in $process_time seconds</p></div>
 <p>
 </body>
 </html>

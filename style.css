@@ -96,8 +96,11 @@ table.results {
   font-family: Verdana, Arial;
 }
 
-.perf {
-  text-align: right;
+.aboutleft {
+  float: left;
+}
+.perfright {
+  float: right;
 }
 /* table to display the database */
 table.results th {

@@ -62,7 +62,7 @@ if(!$result){
         print("<b>Artist:</b> {$row['artist']}<br>\n");
         print("<b>Release:</b> {$row['release_name']}<br>\n");
         print("<b>Link:</b> {$row['link']}<br>\n");
-        print("<b>Added:</b>{$row['time_added']}<br>\n");
+        print("<b>Added:</b> {$row['time_added']}<br>\n");
         print("<b>Archive password:</b><br>\n");
         print("<b>Comment:</b><br>\n");
     } else {
