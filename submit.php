@@ -30,23 +30,32 @@ _END;
 
 // Main user input form
 echo <<<_END
-<p>Add to the database: <br>
+<p><b>Add to the database:</b><p>
 <form method="post" action="add.php" class="form">
 <p>
 <label for="txtArtistName">Artist: </label> <input name="txtArtistName" class="input"/><br>
 <label for="txtReleaseName">Release: </label> <input name="txtReleaseName" class="input"/><br>
 <label for="txtLinkUrl">Link Url: </label> <input name="txtLinkUrl" class="input"/><br>
+<p>
+&nbsp;<p>
+<b>Optional:</b><p>
+<label for="txtReleaseYear">Year: </label> <input name="txtReleaseYear" class="input"/><br>
+<label for="txtMusicStyle">Style: </label> <input name="txtMusicStyle" class="input"/><br>
+<br><label for="txtComments">Comments: </label> <input name="txtComments" class="input"/><br>
+
 <!-- Need to fix the location of this add button -->
 <br><input type="submit" class="button" value="Add" /></br>
 </form>
 _END;
 
+echo "<a href=\"venu.php\">Return to database</a>";
+echo "<p><p>";
 
 // Now that the page is almost completely generated, get the time
 $time = microtime();
 $time = explode(' ', $time);
 $finish = $time[1] + $time[0];
-$process_time = round(($finish - $start), 8);
+$process_time = round(($finish - $start), 10);
 
 // Main footer
 print <<<_END

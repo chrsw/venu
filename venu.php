@@ -93,7 +93,7 @@ echo "|";
 echo "&nbsp";
 echo "&nbsp";
 echo "&nbsp";
-echo "<a href=\"add.php\">Add</a>";
+echo "<a href=\"submit.php\">Add</a>";
 echo "&nbsp";
 echo "&nbsp";
 echo "&nbsp";
@@ -210,7 +210,11 @@ function splitUrl($url, $component){
     preg_match('/^(ftp|https?):\/\/([^\/:]+)(?: :(\d+))?/x', $url, $matches);
     $protocol = $matches[1];
     $host = $matches[2];
-    $port = $matches[3];
+    if ($matches[3]) {
+        $port = $matches[3];
+    } else {
+        $port = NULL;
+    }
     // return a piece of the url depending on what the user wanted
     switch($component):
         case "protocol":
@@ -220,7 +224,11 @@ function splitUrl($url, $component){
             $url_component = $host;
             break;
         case "port":
-            $url_component = $port;
+            if($port) {
+                $url_component = $port;
+            } else {
+                $url_component = NULL;
+            }
             break;
         case "domain":
             // Pick out the domain from the URI (domain.tld)
@@ -262,7 +270,7 @@ function timer_stop()
 $time = microtime();
 $time = explode(' ', $time);
 $finish = $time[1] + $time[0];
-$process_time = round(($finish - $start), 8);
+$process_time = round(($finish - $start), 10);
 
 // Main footer
 print <<<_END

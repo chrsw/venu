@@ -3,9 +3,21 @@
  * add.php: Process input, insert into database and bounce back to the main venu page
  */
 
-require_once 'db_login.php';
+
+// Read the database access info from a file in the form of
+// host:username:password:database:table
+$db_auth_file_name = "db_auth.txt";
+$auth_info = file_get_contents("$db_auth_file_name") or
+        die("Could not get database authorization info.\n<br>");
+
+// Store the password info across some string vars
+list($host, $username, $password, $database, $table) = split(":",$auth_info);
+
+// Eastern timezone
+date_default_timezone_set('America/New_York');
+
 // Connect to the mysql server
-$link = mysql_connect("$host", "$user", "$password");
+$link = mysql_connect("$host", "$username", "$password");
 if (!$link){
     die('Could not connect to the server: ' . mysql_error());
 }
@@ -23,6 +35,7 @@ if (isset($_POST['txtArtistName']) && isset($_POST['txtReleaseName']) && isset($
     $txtArtistName = $_POST['txtArtistName'];
     $txtReleaseName = $_POST['txtReleaseName'];
     $txtLinkUrl = $_POST['txtLinkUrl'];
+    $txtReleaseYear = $_POST['txtReleaseYear'];
     // Sanitize user input
     // Might need to do a better job of extracting dangerous user input.
     // The docs on htmlentities() make it seem like it may not be sufficient.
@@ -45,7 +58,8 @@ if (isset($_POST['txtArtistName']) && isset($_POST['txtReleaseName']) && isset($
     // MySQL command has the form:
     // INSERT INTO releases(artist,release_name,link) VALUES('New Group','Group Release','http://newgroup.bandcamp.com/');
     // Start building a query
-    $insertStart = sprintf("INSERT INTO %s(artist, release_name, link) ", mysql_real_escape_string($table)); 
+    //$insertStart = sprintf("INSERT INTO %s(artist, release_name, link) ", mysql_real_escape_string($table)); 
+    $insertStart = sprintf("INSERT INTO releases(artist, release_name, link) "); 
     $insertValues = sprintf("VALUES('%s', '%s', '%s');", mysql_real_escape_string($txtArtistName), mysql_real_escape_string($txtReleaseName), mysql_real_escape_string($txtLinkUrl));
     $insertQuery = $insertStart . $insertValues;
     $insertStatus = mysql_query($insertQuery);
