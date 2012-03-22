@@ -42,6 +42,7 @@ if (isset($_POST['txtArtistName']) && isset($_POST['txtReleaseName']) && isset($
     $txtArtistName = htmlentities($txtArtistName);
     $txtReleaseName = htmlentities($txtReleaseName);
     $txtLinkUrl = htmlentities($txtLinkUrl);
+    $txtReleaseYear = htmlentities($txtReleaseYear);
     // Don't enter blank input
     if((preg_match('/^$/',$txtArtistName)) || (preg_match('/^$/',$txtReleaseName))){
         // Return to the main page without inserting the data
@@ -59,8 +60,8 @@ if (isset($_POST['txtArtistName']) && isset($_POST['txtReleaseName']) && isset($
     // INSERT INTO releases(artist,release_name,link) VALUES('New Group','Group Release','http://newgroup.bandcamp.com/');
     // Start building a query
     //$insertStart = sprintf("INSERT INTO %s(artist, release_name, link) ", mysql_real_escape_string($table)); 
-    $insertStart = sprintf("INSERT INTO releases(artist, release_name, link) "); 
-    $insertValues = sprintf("VALUES('%s', '%s', '%s');", mysql_real_escape_string($txtArtistName), mysql_real_escape_string($txtReleaseName), mysql_real_escape_string($txtLinkUrl));
+    $insertStart = sprintf("INSERT INTO releases(artist, release_name, link, year) "); 
+    $insertValues = sprintf("VALUES('%s', '%s', '%s', '%s');", mysql_real_escape_string($txtArtistName), mysql_real_escape_string($txtReleaseName), mysql_real_escape_string($txtLinkUrl), mysql_real_escape_string($txtReleaseYear));
     $insertQuery = $insertStart . $insertValues;
     $insertStatus = mysql_query($insertQuery);
     if (!$insertStatus){

@@ -114,7 +114,7 @@ echo "<a href=\"about.php\">About</a>\n";
 // A simple query -- Send a simple SQL query to the MySQL server and
 // print the results into an HTML table.
 $query_limit = 30;
-$result = mysql_query("SELECT DISTINCT artist, release_name, time_added, link, rid FROM releases ORDER BY time_added DESC LIMIT $query_limit");
+$result = mysql_query("SELECT DISTINCT artist, release_name, time_added, link, year, rid FROM releases ORDER BY time_added DESC LIMIT $query_limit");
 if(!$result){
     die('<p>Invalid query: ' . mysql_error());
 }
@@ -137,8 +137,11 @@ while ($row = mysql_fetch_assoc($result)){
     } else {
         echo "\n<tr class=\"alt\">";
     } 
-    print("<td align=\"left\"><a href=view.php?rid={$row['rid']}>{$row['artist']} - {$row['release_name']}</a></td>\n");
-    //echo "<td align=\"left\">{$row['release_name']}</td>";
+    if ($row['year'] != NULL){
+        print("<td align=\"left\"><a href=view.php?rid={$row['rid']}>{$row['artist']} - {$row['release_name']} [{$row['year']}]</a></td>\n");
+    } else {
+        print("<td align=\"left\"><a href=view.php?rid={$row['rid']}>{$row['artist']} - {$row['release_name']}</a></td>\n");
+    }
     $entry_age = findage($row['time_added']);
     print("<td align=\"center\">$entry_age</td>");
     // Open the link in a new window or tab
