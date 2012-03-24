@@ -208,12 +208,13 @@ function findage($date)
  * Get the components of a url
  * */
 function splitUrl($url, $component){
-        // regex to split the url into protocol, host and port.
-        // calculate the domain after.
+    // regex to split the url into protocol, host and port.
+    // calculate the domain after.
     preg_match('/^(ftp|https?):\/\/([^\/:]+)(?: :(\d+))?/x', $url, $matches);
+    $num_matches = count($matches);
     $protocol = $matches[1];
     $host = $matches[2];
-    if ($matches[3]) {
+    if (isset($matches[3])) {
         $port = $matches[3];
     } else {
         $port = NULL;

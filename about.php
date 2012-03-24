@@ -17,6 +17,8 @@ echo "<br>\n";
 echo "Server Root: ";
 echo $_SERVER['DOCUMENT_ROOT'];
 echo "<br>\n";
+echo "<p>\n";
+echo "<a href=\"venu.php\">Return to Database</a>";
 ?>
 </body>
 </head>
