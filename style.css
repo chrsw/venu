@@ -68,7 +68,6 @@ div.header{
   font-weight: lighter;
 }
 
-
 div.sect1{
   font-size: larger;
   font-family: Verdana, Arial;
@@ -120,6 +119,7 @@ table.results td {
 table.results tr.alt td {
   background-color: rgb(219, 220, 219);
 }
+
 label {
   float: left;
   text-align: left;
