@@ -34,11 +34,13 @@ _END;
 // host:username:password:database:table
 $db_auth_file_name = "db_auth.txt";
 $auth_info = file_get_contents("$db_auth_file_name") or
-        die("Could not get database authorization info.\n<br>");
+    die("Could not get database authorization info.\n<br>");
 
 // Store the password info across some string vars
 list($host, $username, $password, $database, $table) = split(":",$auth_info);
 
+// Default # of releases from the table to present to the user on the
+// front page
 $table_length = 50;
 
 // Eastern timezone
@@ -60,7 +62,7 @@ if (!mysql_select_db($database, $link)){
     // Couldn't connect to the MySQL dbase
     echo "\n<p>Could not select database" . $database;
     echo "\n<br>";
-    printf("%s", mysql_error());
+    printf("Error: %s", mysql_error());
     mysql_close($link);
     exit;
 } else {
